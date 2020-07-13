@@ -98,7 +98,6 @@
 pub mod dkg_result;
 pub mod message;
 pub mod parsec_rng;
-mod rng_adapter;
 
 #[cfg(test)]
 mod tests;
@@ -109,7 +108,8 @@ use rand::RngCore;
 use serde_derive::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt::{self, Debug, Formatter};
-use threshold_crypto::pairing::{CurveAffine, Field};
+use threshold_crypto::ff::Field;
+use threshold_crypto::group::CurveAffine;
 use threshold_crypto::{
     poly::{BivarCommitment, BivarPoly, Poly},
     serde_impl::FieldWrap,
@@ -269,7 +269,7 @@ impl<S: SecretId> KeyGen<S> {
         sec_key: &S,
         pub_keys: BTreeSet<S::PublicId>,
         threshold: usize,
-        rng: &mut dyn RngCore,
+        mut rng: &mut dyn RngCore,
     ) -> Result<(KeyGen<S>, Option<Part>), Error> {
         let our_id = sec_key.public_id().clone();
         let our_idx = pub_keys
@@ -287,7 +287,6 @@ impl<S: SecretId> KeyGen<S> {
             return Ok((key_gen, None)); // No part: we are an observer.
         }
 
-        let mut rng = rng_adapter::RngAdapter(&mut *rng);
         let our_part = BivarPoly::random(threshold, &mut rng);
         let commit = our_part.commitment();
         let encrypt = |(i, pk): (usize, &S::PublicId)| {
