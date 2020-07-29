@@ -195,7 +195,7 @@ impl Strategy for ScheduleStrategy {
         };
         self.opts
             .new_tree(runner)
-            .and_then(|o| Ok(ScheduleValueTree::new(seed, o)))
+            .map(|o| ScheduleValueTree::new(seed, o))
     }
 }
 
