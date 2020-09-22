@@ -397,6 +397,7 @@ pub(crate) mod snapshot {
 #[cfg(all(test, feature = "testing"))]
 mod tests {
     use crate::dev_utils::parse_test_dot_file;
+    use std::cmp::Reverse;
 
     #[test]
     fn ancestors_iterator() {
@@ -428,7 +429,7 @@ mod tests {
 
         // Assert the events are yielded in reverse topological order.
         let mut sorted_indices = actual_indices.clone();
-        sorted_indices.sort_by(|a, b| b.cmp(a));
+        sorted_indices.sort_by_key(|&b| Reverse(b));
 
         assert_eq!(actual_indices, sorted_indices);
     }
