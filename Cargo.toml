@@ -1,15 +1,15 @@
 [package]
-authors = ["MaidSafe Developers <dev@maidsafe.net>"]
+authors = [ "MaidSafe Developers <dev@maidsafe.net>" ]
 description = "Implementation of Protocol for Asynchronous, Reliable, Secure and Efficient Consensus"
 documentation = "https://docs.rs/parsec"
 edition = "2018"
-exclude = ["input_graphs/*"]
+exclude = [ "input_graphs/*" ]
 homepage = "https://maidsafe.net"
 license = "GPL-3.0"
 name = "parsec"
 readme = "README.md"
 repository = "https://github.com/maidsafe/parsec"
-version = "0.7.1"
+version = "0.7.2"
 
 [dependencies]
 bincode = "1.2.1"
@@ -17,17 +17,26 @@ fnv = "1.0.6"
 itertools = "~0.8.0"
 lazy_static = "1.4"
 log = "~0.3.8"
-pom = { version = "1.1.0", optional = true }
-proptest = { version = "~0.8.6", optional = true }
 rand = "~0.7.3"
 rand_core = "~0.5.1"
-rand_xorshift = { version = "~0.2.0", optional = true }
 serde = "1.0.66"
 serde_derive = "1.0.66"
 tiny-keccak = "1.5.0"
 unwrap = "1.2.1"
 threshold_crypto = "~0.4.0"
 failure = "~0.1.5"
+
+  [dependencies.pom]
+  version = "1.1.0"
+  optional = true
+
+  [dependencies.proptest]
+  version = "~0.8.6"
+  optional = true
+
+  [dependencies.rand_xorshift]
+  version = "~0.2.0"
+  optional = true
 
 [dev-dependencies]
 clap = "2.32.0"
@@ -38,22 +47,21 @@ rand_xorshift = "~0.2.0"
 walkdir = "2.2.7"
 
 [features]
-dump-graphs = []
-mock = []
-testing = ["proptest", "mock", "pom", "rand_xorshift"]
-malice-detection = []
+dump-graphs = [ ]
+mock = [ ]
+testing = [ "proptest", "mock", "pom", "rand_xorshift" ]
+malice-detection = [ ]
 
 [workspace]
-members = ["dot_gen"]
+members = [ "dot_gen" ]
 
 [lib]
-# https://bheisler.github.io/criterion.rs/book/faq.html#cargo-bench-gives-unrecognized-option-errors-for-valid-command-line-options
 bench = false
 
 [[example]]
 name = "basic"
 path = "examples/basic.rs"
-required-features = ["mock"]
+required-features = [ "mock" ]
 
 [[bench]]
 name = "bench"
